@@ -1,1 +1,3 @@
 include README.md LICENCE
+recursive-include cellyzer_gui/assets *.gif
+recursive-include cellyzer_gui/assets *.css

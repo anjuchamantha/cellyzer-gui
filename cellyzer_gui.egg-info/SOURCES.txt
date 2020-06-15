@@ -8,3 +8,7 @@ cellyzer_gui.egg-info/dependency_links.txt
 cellyzer_gui.egg-info/entry_points.txt
 cellyzer_gui.egg-info/requires.txt
 cellyzer_gui.egg-info/top_level.txt
+cellyzer_gui/assets/add-call.gif
+cellyzer_gui/assets/add-dataset.gif
+cellyzer_gui/assets/functions.gif
+cellyzer_gui/assets/gui.css

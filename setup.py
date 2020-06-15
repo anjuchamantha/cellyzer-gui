@@ -1,6 +1,5 @@
 from setuptools import setup
 
-
 def readme():
     with open('README.md') as f:
         README = f.read()
@@ -9,7 +8,7 @@ def readme():
 
 setup(
     name="cellyzer-gui",
-    version="0.0.1",
+    version="0.0.7",
     description="GUI for Cellyzer,a CDR(Call Data Records) data analyzing library",
     long_description=readme(),
     long_description_content_type="text/markdown",
