@@ -540,11 +540,13 @@ visualize_connections = html.Div([
                         id="user_visu_conn",
                         placeholder="Select a User",
                         multi=True,
-                        style={'width': 500}
+                        style={'width': 800}
                     ),
                 ),
             ],
         ),
+        html.Br(),
+        html.Br(),
         dbc.Button('Visualize Connection', id='visualize_connection', color='danger',
                    className='sample_call_dataset_viewdata')],
         className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
