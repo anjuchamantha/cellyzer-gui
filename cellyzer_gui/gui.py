@@ -106,7 +106,7 @@ homepageSidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://i0.wp.com/www.butterflyfields.com/wp-content/uploads/2019/02/How-does-a-Computer-work1.jpg?fit=1024%2C1024&ssl=1",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -234,7 +234,7 @@ callpagesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -302,7 +302,7 @@ callpagevisualizesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -1360,7 +1360,7 @@ cellpagesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -1446,7 +1446,7 @@ cellpagevisualizesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -2099,7 +2099,7 @@ messagepagesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -2169,7 +2169,7 @@ messagepagevisualizesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
