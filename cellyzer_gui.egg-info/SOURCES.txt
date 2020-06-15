@@ -1,0 +1,10 @@
+MANIFEST.in
+README.md
+setup.py
+cellyzer_gui/gui.py
+cellyzer_gui.egg-info/PKG-INFO
+cellyzer_gui.egg-info/SOURCES.txt
+cellyzer_gui.egg-info/dependency_links.txt
+cellyzer_gui.egg-info/entry_points.txt
+cellyzer_gui.egg-info/requires.txt
+cellyzer_gui.egg-info/top_level.txt

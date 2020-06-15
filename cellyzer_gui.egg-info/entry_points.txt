@@ -1,0 +1,3 @@
+[console_scripts]
+cellyzer-gui = cellyzer_gui.gui:main
+
