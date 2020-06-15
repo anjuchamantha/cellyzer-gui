@@ -133,24 +133,30 @@ home_page = html.Div([
             html.Hr(),
             html.P("Instructions", className="lead", style={'text-align': 'center', 'font-size': '30px'}),
             html.Hr(),
-            dbc.Row([
-                html.Div([
-                    dbc.CardHeader('Adding a dataset', style={'font-size': '24px', 'text-align': 'center'}),
-                    dbc.Col([
-                        html.Img(src='assets/add-call.gif')
-                    ]),
-                    html.P('Note : Adding a cell records a call dataset',
-                           style={'padding-left': '10px', 'padding-top': '10px'})
-                ], style={'border-right': '1px solid #212529'}),
-                html.Div([
-                    dbc.CardHeader('Select a function', style={'font-size': '24px', 'text-align': 'center'}),
-                    dbc.Col([
-                        html.Img(src='assets/functions.gif')
-                    ]),
-                    html.P('Note : User can select customized functions',
-                           style={'padding-left': '10px', 'padding-top': '10px'})
-                ]),
-            ])
+            html.Div([
+                dbc.Row([
+                    html.Div([
+                        dbc.Card([
+                            dbc.CardImg(src='assets/add-call.gif', top=True),
+                            dbc.CardBody([
+                                html.H4("Adding a Dataset", className="card-title"),
+                                html.P('Note : Adding a cell records a call dataset', className="card-text")
+                            ]),
+                        ]),
+                    ], style={'float': 'center'}),
+                ], style={'display': 'block'}),
+                dbc.Row([
+                    html.Div([
+                        dbc.Card([
+                            dbc.CardImg(src='assets/functions.gif', top=True),
+                            dbc.CardBody([
+                                html.H4("Select a function", className="card-title"),
+                                html.P('ote : User can select customized functions', className="card-text")
+                            ])
+                        ]),
+                    ],style={'float': 'center'}),
+                ], style={'display': 'block'}),
+            ],style={'margin':'0rem 12rem'})
         ],
         style={"margin": 20, "margin-top": 100, 'margin-left': 80}
     ),
