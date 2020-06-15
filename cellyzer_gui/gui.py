@@ -37,7 +37,7 @@ def SimpleTitleBar(name="<Sub Title>"):
             sticky=True,
         ),
         style={"padding-bottom": 20, "position": "fixed", "overflow": "hidden",
-               "top": 0, "width": "100rem", "background-color": "white", 'margin-left': '20px'
+               "top": 0, "width": "100%", "background-color": "white", 'margin-left': '20px'
                }
     )
 
@@ -100,7 +100,7 @@ homepageSidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="https://adminlte.io/themes/AdminLTE/dist/img/user2-160x160.jpg",
+    src="https://i0.wp.com/www.butterflyfields.com/wp-content/uploads/2019/02/How-does-a-Computer-work1.jpg?fit=1024%2C1024&ssl=1",
     elevation=3,
     opacity=0.8
 )
