@@ -2952,5 +2952,9 @@ def display_page(pathname):
         print(str(e))
 
 
+def main():
+    app.run_server(debug=False)
+
+
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    main()

@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name="cellyzer-gui",
-    version="0.0.7",
+    version="0.1.0",
     description="GUI for Cellyzer,a CDR(Call Data Records) data analyzing library",
     long_description=readme(),
     long_description_content_type="text/markdown",
