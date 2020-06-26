@@ -1,7 +1,5 @@
 import base64
-import datetime
 import io
-import plotly.graph_objs as go
 import dash
 from dash.dependencies import Input, Output, State
 import dash_core_components as dcc
@@ -9,8 +7,6 @@ import dash_html_components as html
 import dash_admin_components as dac
 import dash_bootstrap_components as dbc
 import dash_table
-import folium
-import flask
 import os
 import sys
 
@@ -21,9 +17,6 @@ app = dash.Dash(__name__, external_stylesheets=[{dbc.themes.BOOTSTRAP}])
 server = app.server
 
 app.config.suppress_callback_exceptions = True
-
-# image_filename = 'cdr.jpg'
-# encoded_mage = base64.b64encode(open(image_filename, 'rb').read())
 
 
 app.layout = html.Div([
@@ -283,7 +276,7 @@ call_dataset = html.Div([
         ], style={"margin-top": '40px'}),
         dbc.Alert(id='alert', dismissable=True, is_open=False,
                   style={'width': '500px', 'background-color': 'red', 'font-size': '18px'})
-    ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": '150px'}),
+    ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": 60}),
 ],
     className='index_page_div'
 )
@@ -325,7 +318,7 @@ call_dataset_file = html.Div([
                 style={"margin-right": 20, "margin-bottom": 50, "width": "60%"}
             ),
         ],
-        style={"margin": 20, "margin-top": 100, 'margin-left': 50}
+        style={"margin": 20, "margin-top": 40, 'margin-left': 50}
 
     )], className='index_page_div')
 
@@ -338,7 +331,7 @@ view_all_call_data = html.Div([
     html.Div([
         dbc.Button('VIEW DATA', id='view', color='success', className='sample_call_dataset_viewdata'),
         dbc.Button('CLOSED DATA', id='close', color='danger', className='sample_call_dataset_close')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}),
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}),
     html.Div(id='show_data', className='sample_call_dataset_show'),
 ],
     className='index_page_div')
@@ -350,7 +343,7 @@ get_all_users = html.Div([
     html.Div([
         dbc.Button('Get All Users', color='success', id='get_users',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_all_users', className='sample_call_dataset_show_all_users'),
 ],
@@ -379,7 +372,7 @@ connected_users = html.Div([
         dbc.Button('Get Connected Users', color='success', id='connected_users',
                    className='sample_call_dataset_viewdata'),
     ],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_connected_users', className='sample_call_dataset_show_all_users'),
 ],
@@ -424,7 +417,7 @@ records_between_users = html.Div([
             row=True,
         ),
         dbc.Button('Get Records', id='record_users', color='success', className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_records_users', className='sample_call_dataset_show_all_users'),
 ],
@@ -463,7 +456,7 @@ close_contacts = html.Div([
             ],
         ),
         dbc.Button('Close Contacts', id='close_contacts', color='success', className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_close_contact', className='sample_call_dataset_show_all_users'),
 ],
@@ -490,7 +483,7 @@ ignore_call_detail = html.Div([
             ],
         ),
         dbc.Button('Get Ignored Call', id='ignore_call', color='success', className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_ignore_call', className='sample_call_dataset_show_all_users'),
 ],
@@ -518,7 +511,7 @@ active_time_user = html.Div([
         ),
         dbc.Button('Show Active Time Graph', id='active_time', color='success',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_active_time', className='sample_call_dataset_show_all_users'),
 ],
@@ -549,7 +542,7 @@ visualize_connections = html.Div([
         html.Br(),
         dbc.Button('Visualize Connection', id='visualize_connection', color='danger',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_visualize_connection', className='sample_call_dataset_show_all_users'),
 ],
@@ -707,26 +700,6 @@ def add_call_dataset_alert(filename, contents, n_clicks, is_open):
 
     else:
         return False, None
-
-
-######## direct for the datset page after adding call dataset
-@app.callback(Output('adding_call', 'href'),
-              [Input('upload-data_call', 'value'), Input('filepath', 'contents')]
-              )
-def call_direct_datset(filename, contents):
-    try:
-        if (filename in call_name) or (contents in all_file_content) or (contents is None) or (filename is None) or (
-                ' ' in filename) or len(filename) == 0:
-            return None
-        else:
-            call_data = parse_contents(contents)
-            all_users = call_data.get_all_users()
-            href = '/Dataset'
-            return href
-
-    except Exception as e:
-        # print(e)
-        return None
 
 
 ########## set n_clicks to 0
@@ -1427,7 +1400,7 @@ cell_dataset = html.Div([
         ], style={"margin-top": '40px'}),
         dbc.Alert(id='alert_cell', dismissable=True, is_open=False,
                   style={'width': '500px', 'background-color': 'red', 'font-size': '18px'})
-    ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": '150px'}),
+    ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": 60}),
 ],
     className='index_page_div'
 )
@@ -1471,7 +1444,7 @@ cell_dataset_file = html.Div([
                 style={"margin-right": 20, "margin-bottom": 50, "width": "60%"}
             ),
         ],
-        style={"margin": 20, "margin-top": 100, 'margin-left': 50}
+        style={"margin": 20, "margin-top": 40, 'margin-left': 50}
 
     )], className='index_page_div')
 
@@ -1487,7 +1460,7 @@ view_all_cell_data = html.Div([
                    className='sample_call_dataset_viewdata'),
         dbc.Button('CLOSED DATA', id='close_cell', color='danger',
                    className='sample_call_dataset_close')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}),
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}),
     html.Div(id='show_cell_data', className='sample_call_dataset_show'),
 ],
     className='index_page_div')
@@ -1514,7 +1487,7 @@ records_of_cell = html.Div([
         ),
         dbc.Button('Records Cell', id='records_cell', color='success',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_records_cell', className='sample_call_dataset_show'),
 ],
@@ -1543,7 +1516,7 @@ population_around_cell = html.Div([
         ),
         dbc.Button('Get Population', id='population_button', color='danger',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_population', className='sample_call_dataset_show_all_users'),
 ],
@@ -1571,7 +1544,7 @@ trip_visualize = html.Div([
         ),
         dbc.Button('Trip Visualize', id='trip_visualize_button', color='danger',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_trip_visualize', className='sample_call_dataset_show_all_users'),
 ],
@@ -1733,32 +1706,6 @@ def add_cell_dataset_alert(call_file, filename, contents, n_clicks, is_open):
         return False, None
 
 
-######## direct for the dataset page after adding cell dataset
-@app.callback(Output('show_cell_dash', 'href'),
-              [Input('select_call', 'value'), Input('upload-data_cell', 'value'), Input('filepath_cell', 'contents')]
-              )
-def cell_direct_dataset(call_file, filename, contents):
-    try:
-        if (filename in added_cell_name) or (contents is None) or (filename is None) or (call_file is None) or (
-                ' ' in filename) or len(filename) == 0:
-            return None
-        else:
-            for call in call_data_list:
-                f_name = call[0]
-                if call_file == f_name:
-                    cell_data = parse_contents_cell(contents, call[-1])
-                    dict_list = []
-                    for record in cell_data.get_records():
-                        dict_list.append(vars(record))
-                    break
-            href = '/Dataset'
-            return href
-
-    except Exception as e:
-        # print(e)
-        return None
-
-
 ########### set button n_clicks to zero
 @app.callback(Output('show_cell_dash', 'n_clicks'),
               [Input('select_call', 'value'), Input('upload-data_cell', 'value'), Input('filepath_cell', 'contents')])
@@ -1795,10 +1742,11 @@ def view_cell_data(n_clicks, click2):
             return None
 
         if n_clicks is not None:
-            cell_dataset = update_cell_data[-1][-1]
-            show_data = cz.utils.print_dataset(dataset_obj=cell_dataset, head=50, tail=50)
-            header = show_data[0]
-            dict_list = show_data[1]
+            cell_records = update_cell_data[-1][3]
+            dict_list = []
+            for record in cell_records:
+                dict_list.append(vars(record))
+            header = list(dict_list[0].keys())
             tab = []
             column = []
             for i in header:
@@ -1813,10 +1761,10 @@ def view_cell_data(n_clicks, click2):
                 tab.append(html.Tr(children=row_content, style={'height': '5px'}))
             table = html.Div([
                 html.Table(children=tab,
-                           style={'border-collapse': 'collapse',
-                                  'border': '1px solid black',
-                                  'width': '100%'
-                                  })
+                        style={'border-collapse': 'collapse',
+                                'border': '1px solid black',
+                                'width': '100%'
+                                })
             ])
             return table
 
@@ -1912,7 +1860,7 @@ def get_population(n_clicks, cell_id):
 ###### set 0 n_clicks population_button button
 @app.callback(Output('population_button', 'n_clicks'),
               [Input('cell_id_population', 'value')])
-def cell_recrd_button_(cell_id):
+def cell_population_button(cell_id):
     if len(cell_idList_pop) >= 1 and cell_idList_pop[-1] != cell_id:
         return None
 
@@ -2078,7 +2026,7 @@ def select_cell_specific_record(n_clicks):
 @app.callback(Output('cell_id_population', 'options'),
               [Input('select_id_population', 'n_clicks')
                ])
-def select_cell_specific_record(n_clicks):
+def select_cell_popu(n_clicks):
     if n_clicks is not None:
         return get_cell_ID_drop()
 
@@ -2150,7 +2098,7 @@ message_dataset = html.Div([
         ], style={"margin-top": '40px'}),
         dbc.Alert(id='alert_message', dismissable=True, is_open=False,
                   style={'width': '500px', 'background-color': 'red', 'font-size': '18px'})
-    ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": '150px'}),
+    ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": 60}),
 ],
     className='index_page_div'
 )
@@ -2194,7 +2142,7 @@ message_data_file = html.Div([
                 style={"margin-right": 20, "margin-bottom": 50, "width": "60%"}
             ),
         ],
-        style={"margin": 20, "margin-top": 100, 'margin-left': 50}
+        style={"margin": 20, "margin-top": 40, 'margin-left': 50}
 
     )], className='index_page_div')
 
@@ -2210,7 +2158,7 @@ view_all_message_data = html.Div([
                    className='sample_call_dataset_viewdata'),
         dbc.Button('CLOSED DATA', id='close_message', color='danger',
                    className='sample_call_dataset_close')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}),
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}),
     html.Div(id='show_message_data', className='sample_call_dataset_show'),
 ],
     className='index_page_div')
@@ -2222,7 +2170,7 @@ get_all_message_users = html.Div([
     html.Div([
         dbc.Button('Get All Users', color='success', id='get_message_users',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_all_message_users', className='sample_call_dataset_show_all_users'),
 ],
@@ -2250,7 +2198,7 @@ connected_message_users = html.Div([
         ),
         dbc.Button('Get Connected Users', color='success', id='connected_message_users',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_connected_message_users', className='sample_call_dataset_show_all_users'),
 ],
@@ -2296,7 +2244,7 @@ message_records_between_users = html.Div([
         ),
         dbc.Button('Get Records', id='record_message_users', color='success',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_records_message_users', className='sample_call_dataset_show_all_users'),
 ],
@@ -2325,7 +2273,7 @@ visualize_message_connections = html.Div([
         ),
         dbc.Button('Visualize Connection', id='visualize_message_connection', color='danger',
                    className='sample_call_dataset_viewdata')],
-        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 100}
+        className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
     html.Div(id='show_visualize_message_connection', className='sample_call_dataset_show_all_users'),
 ],
@@ -2472,26 +2420,6 @@ def add_message_dataset_alert(filename, contents, n_clicks, is_open):
             return True, word
     else:
         return False, None
-
-
-######## direct for the datset page after adding message dataset
-@app.callback(Output('adding_message', 'href'),
-              [Input('upload-data_message', 'value'), Input('filepath_message', 'contents')]
-              )
-def message_direct_datset(filename, contents):
-    try:
-        if (filename in added_message_name) or (contents in all_message_content) or (contents is None) or (
-                filename is None) or (' ' in filename) or len(filename) == 0:
-            return None
-        else:
-            message_data = parse_contents_message(contents)
-            all_users = message_data.get_all_users()
-            href = '/Dataset'
-            return href
-
-    except Exception as e:
-        # print(e)
-        return None
 
 
 ######### set button n_clicks to zero
@@ -2952,9 +2880,5 @@ def display_page(pathname):
         print(str(e))
 
 
-def main():
-    app.run_server(debug=False)
-
-
 if __name__ == '__main__':
-    main()
+    app.run_server(debug=True)
