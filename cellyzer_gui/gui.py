@@ -329,6 +329,38 @@ view_all_call_data = html.Div([
     navbar_call_dataset_visualize,
     callpagevisualizesidebar,
     html.Div([
+        dcc.Checklist(
+            options=[{'label': 'All Data', 'value': 'all'}],
+            id='check_call'
+        ),
+        html.Br(),
+        dbc.FormGroup(
+                [
+                    dbc.Label("Number of head", html_for="example-email-row", width=2, color='black'),
+                    dbc.Col(
+                        dbc.Input(
+                            type="number", id="call_head", placeholder="Enter number",
+                            style={'width': 300}
+                        ),
+                        width=10,
+                    ),
+                ],
+                row=True,
+            ),
+            dbc.FormGroup(
+                [
+                    dbc.Label("Number of tail", html_for="example-email-row", width=2, color='black'),
+                    dbc.Col(
+                        dbc.Input(
+                            type="number", id="call_tail", placeholder="Enter number",
+                            style={'width': 300}
+                        ),
+                        width=10,
+                    ),
+                ],
+                row=True,
+            ),
+        html.Br(),
         dbc.Button('VIEW DATA', id='view', color='success', className='sample_call_dataset_viewdata'),
         dbc.Button('CLOSED DATA', id='close', color='danger', className='sample_call_dataset_close')],
         className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}),
@@ -798,42 +830,123 @@ def call_visu_sidebar(pathname):
         name = html.Div(children=output_call)
         return name
 
+def showing_call_data(head, tail):
+    call_data = update_call_data[-1][-1]
+    show_data = cz.utils.print_dataset(dataset_obj=call_data, head=head, tail=tail)
+    header = show_data[0]
+    dict_list = show_data[1]
+    tab = []
+    column = []
+    for i in header:
+        column.append(
+            html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
+    tab.append(html.Tr(children=column))
+    for j in dict_list:
+        value = list(j.values())
+        row_content = []
+        for x in value:
+            row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
+        tab.append(html.Tr(children=row_content, style={'height': '5px'}))
+    table = html.Div([
+        html.Table(children=tab,
+                style={'border-collapse': 'collapse',
+                        'border': '1px solid black',
+                        'width': '100%'
+                        })
+    ])
+    return table
+
+
+head_list = []
+tail_list = []
+check_List = []
 
 ######### view call dataset
 @app.callback(Output('show_data', 'children'),
-              [Input('view', 'n_clicks'),
-               Input('close', 'n_clicks')
-               ])
-def update_table(n_clicks, click2):
+              [Input('view', 'n_clicks'), Input('close', 'n_clicks'), Input('call_head', 'value'),          
+               Input('call_tail', 'value'), 
+                 Input('check_call', 'value')
+                ])
+def update_table(n_clicks, click2, head, tail, check):
     try:
         table = html.Div()
         if click2 is not None:
             return None
 
         if n_clicks is not None:
-            call_data = update_call_data[-1][-1]
-            show_data = cz.utils.print_dataset(dataset_obj=call_data, head=50, tail=50)
-            header = show_data[0]
-            dict_list = show_data[1]
-            tab = []
-            column = []
-            for i in header:
-                column.append(
-                    html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
-            tab.append(html.Tr(children=column))
-            for j in dict_list:
-                value = list(j.values())
-                row_content = []
-                for x in value:
-                    row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
-                tab.append(html.Tr(children=row_content, style={'height': '5px'}))
-            table = html.Div([
-                html.Table(children=tab,
-                           style={'border-collapse': 'collapse',
-                                  'border': '1px solid black',
-                                  'width': '100%'
-                                  })
-            ])
+            # print(check)
+            head_list.append(head)
+            tail_list.append(tail)
+            check_List.append(check)
+            if check is not None and check[0]=='all':
+                print('hai')
+                record_call = update_call_data[-1][3]
+                table = showing_call_data(len(record_call), 0)
+                # dict_list = []
+                # for record in record_call:
+                #     dict_list.append(vars(record))
+                # header = list(dict_list[0].keys())
+                # tab = []
+                # column = []
+                # for i in header:
+                #     column.append(
+                #         html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
+                # tab.append(html.Tr(children=column))
+                # for j in dict_list:
+                #     value = list(j.values())
+                #     row_content = []
+                #     for x in value:
+                #         row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
+                #     tab.append(html.Tr(children=row_content, style={'height': '5px'}))
+                # table = html.Div([
+                #     html.Table(children=tab,
+                #             style={'border-collapse': 'collapse',
+                #                     'border': '1px solid black',
+                #                     'width': '100%'
+                #                     })
+                # ])
+            elif head is None:
+                table = html.Div([
+                    html.H5(children='Please enter number into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif tail is None:
+                table = html.Div([
+                    html.H5(children='Please enter number into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif  head is not None and head <= 0:
+                table = html.Div([
+                    html.H5(children='Please enter number greater than 0 into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif tail is not None and tail <= 0:
+                table = html.Div([
+                    html.H5(children='Please enter number greater than 0 into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            else:
+                print(head, tail)
+                table = showing_call_data(head, tail)
+                # call_data = update_call_data[-1][-1]
+                # show_data = cz.utils.print_dataset(dataset_obj=call_data, head=head, tail=tail)
+                # header = show_data[0]
+                # dict_list = show_data[1]
+                # tab = []
+                # column = []
+                # for i in header:
+                #     column.append(
+                #         html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
+                # tab.append(html.Tr(children=column))
+                # for j in dict_list:
+                #     value = list(j.values())
+                #     row_content = []
+                #     for x in value:
+                #         row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
+                #     tab.append(html.Tr(children=row_content, style={'height': '5px'}))
+                # table = html.Div([
+                #     html.Table(children=tab,
+                #             style={'border-collapse': 'collapse',
+                #                     'border': '1px solid black',
+                #                     'width': '100%'
+                #                     })
+                # ])
             return table
 
     except Exception as e:
@@ -846,6 +959,17 @@ def update_table(n_clicks, click2):
                ])
 def close_data(n_clicks):
     if n_clicks is not None:
+        return None
+
+###### set 0 n_clicks view data button
+@app.callback(Output('view', 'n_clicks'),
+              [Input('call_head', 'value'), Input('call_tail', 'value'), Input('check_call', 'value')])
+def view_data_button(head, tail, check):
+    if len(head_list) >= 1 and head_list[-1] != head:
+        return None
+    elif len(tail_list) >= 1 and tail_list[-1] != tail:
+        return None
+    elif len(check_List) >= 1 and check_List[-1] != tail:
         return None
 
 
@@ -881,7 +1005,6 @@ def show_all_users(n_clicks):
 
 
 connected_userList = []
-
 
 ######## show connected users of specific user
 @app.callback(Output('show_connected_users', 'children'),
@@ -1118,7 +1241,6 @@ def show_active_time(n_clicks, user_4):
     try:
         if n_clicks is not None:
             active_timeList.append(user_4)
-            filename = update_call_data[-1][0]
             call_data = update_call_data[-1][-1]
             call_users = update_call_data[-1][2]
             if user_4 is None or len(user_4) == 0:
