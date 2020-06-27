@@ -329,11 +329,6 @@ view_all_call_data = html.Div([
     navbar_call_dataset_visualize,
     callpagevisualizesidebar,
     html.Div([
-        dcc.Checklist(
-            options=[{'label': 'All Data', 'value': 'all'}],
-            id='check_call',
-            style={'font-size': 18, 'font-style': 'normal', 'color':'blue'}
-        ),
         html.Br(),
         dbc.FormGroup(
                 [
@@ -606,7 +601,7 @@ def parse_contents(contents):
 
 
 ###### add call data
-@app.callback(Output('call-data', 'children'),
+@app.callback([Output('call-data', 'children'), Output('alert', 'is_open'), Output('alert', 'children')],
               [Input('upload-data_call', 'value'), Input('filepath', 'contents'), Input('adding_call', 'n_clicks')],
               )
 def add_call_dataset(filename, content, n_clicks):
@@ -614,15 +609,25 @@ def add_call_dataset(filename, content, n_clicks):
         try:
             call_content.append(content)
             call_files_name.append(filename)
+            if content is None:
+                word = 'Please select call dataset'
+            elif filename is None or len(filename) == 0:
+                word = 'Please enter filename'
+            elif content in all_file_content:
+                word = 'This file already exist'
+            elif filename in call_name:
+                word = 'Please enter other name'
+            elif ' ' in filename:
+                word = 'Do not enter space into filename'
             if content in all_file_content or filename in call_name or filename is None or ' ' in filename or len(
-                    filename) == 0:
+                    filename) == 0 or content is None:
                 output_call = []
                 for x in call_data_list:
                     a = x[0]
                     output_call.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'yellow'}))
                     output_call.append(html.Br())
                 name = html.Div(children=output_call)
-                return name
+                return name, True, word
             else:
                 call_data = parse_contents(content)
                 record = call_data.get_records()
@@ -674,7 +679,7 @@ def add_call_dataset(filename, content, n_clicks):
                     output_call.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'yellow'}))
                     output_call.append(html.Br())
                 name = html.Div(children=output_call)
-                return name
+                return name, False, None
 
         except Exception as e:
             print(str(e))
@@ -684,7 +689,11 @@ def add_call_dataset(filename, content, n_clicks):
                 output_call.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'yellow'}))
                 output_call.append(html.Br())
             name = html.Div(children=output_call)
-            return name
+            if str(e) == "'NoneType' object has no attribute 'get_records'":
+                word = "Dataset is not call dataset"
+            else:
+                word = "Error in file"
+            return name, True, word
 
     else:
         output_call = []
@@ -693,48 +702,7 @@ def add_call_dataset(filename, content, n_clicks):
             output_call.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'yellow'}))
             output_call.append(html.Br())
         name = html.Div(children=output_call)
-        return name
-
-
-########### alert for call data
-@app.callback([Output('alert', 'is_open'), Output('alert', 'children')],
-              [Input('upload-data_call', 'value'), Input('filepath', 'contents'), Input('adding_call', 'n_clicks')],
-              [State('alert', 'is_open')]
-              )
-def add_call_dataset_alert(filename, contents, n_clicks, is_open):
-    if n_clicks is not None:
-        try:
-            if contents is None:
-                word = 'Please select call dataset'
-                return True, word
-            elif filename is None or len(filename) == 0:
-                word = 'Please enter filename'
-                return True, word
-            elif contents in all_file_content:
-                word = 'This file already exist'
-                return True, word
-            elif filename in call_name:
-                word = 'Please enter other name'
-                return True, word
-            elif ' ' in filename:
-                word = 'Do not enter space into filename'
-                return True, word
-            else:
-                call_data = parse_contents(contents)
-                all_users = call_data.get_all_users()
-
-                return False, None
-
-        except Exception as e:
-            print(e)
-            if str(e) == "'NoneType' object has no attribute 'get_all_users'":
-                word = "Dataset is not call dataset"
-            else:
-                word = "Error in file"
-            return True, word
-
-    else:
-        return False, None
+        return name, False, None
 
 
 ########## set n_clicks to 0
@@ -863,14 +831,13 @@ def showing_call_data(head, tail):
 
 head_list = []
 tail_list = []
-check_List = []
 
 ######### view call dataset
 @app.callback(Output('show_data', 'children'),
               [Input('view', 'n_clicks'), Input('close', 'n_clicks'), Input('call_head', 'value'),          
-               Input('call_tail', 'value'), Input('check_call', 'value')
+               Input('call_tail', 'value')
                 ])
-def update_table(n_clicks, click2, head, tail, check):
+def update_table(n_clicks, click2, head, tail):
     try:
         table = html.Div()
         if click2 is not None:
@@ -879,33 +846,7 @@ def update_table(n_clicks, click2, head, tail, check):
         if n_clicks is not None:
             head_list.append(head)
             tail_list.append(tail)
-            check_List.append(check)
-            if check is not None and check[0]=='all':
-                record_call = update_call_data[-1][3]
-                dict_list = []
-                for record in record_call:
-                    dict_list.append(vars(record))
-                header = list(dict_list[0].keys())
-                tab = []
-                column = []
-                for i in header:
-                    column.append(
-                        html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
-                tab.append(html.Tr(children=column))
-                for j in dict_list:
-                    value = list(j.values())
-                    row_content = []
-                    for x in value:
-                        row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
-                    tab.append(html.Tr(children=row_content, style={'height': '5px'}))
-                table = html.Div([
-                    html.Table(children=tab,
-                            style={'border-collapse': 'collapse',
-                                    'border': '1px solid black',
-                                    'width': '100%'
-                                    })
-                ])
-            elif head is None:
+            if head is None:
                 table = html.Div([
                     html.H5(children='Please enter number into head',
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
@@ -940,13 +881,11 @@ def close_data(n_clicks):
 
 ###### set 0 n_clicks view data button
 @app.callback(Output('view', 'n_clicks'),
-              [Input('call_head', 'value'), Input('call_tail', 'value'), Input('check_call', 'value')])
-def view_data_button(head, tail, check):
+              [Input('call_head', 'value'), Input('call_tail', 'value')])
+def view_data_button(head, tail):
     if len(head_list) >= 1 and head_list[-1] != head:
         return None
     elif len(tail_list) >= 1 and tail_list[-1] != tail:
-        return None
-    elif len(check_List) >= 1 and check_List[-1] != tail:
         return None
 
 
@@ -1674,7 +1613,7 @@ added_cell_name = []
 
 
 ####### add cell data
-@app.callback(Output('cell-data', 'children'),
+@app.callback([Output('cell-data', 'children'), Output('alert_cell', 'is_open'), Output('alert_cell', 'children')],
               [Input('select_call', 'value'), Input('upload-data_cell', 'value'), Input('filepath_cell', 'contents'),
                Input('show_cell_dash', 'n_clicks')],
               )
@@ -1684,15 +1623,24 @@ def add_cell_dataset(call_file, filename, contents, n_clicks):
             content_cell.append(contents)
             adding_call.append(call_file)
             cell_file_name.append(filename)
-            if filename in added_cell_name or filename is None or ' ' in filename or len(
-                    filename) == 0 or call_file is None:
+            if contents is None:
+                word = 'Please add cell dataset'
+            elif filename is None or len(filename) == 0:
+                word = 'Please enter filename'
+            elif call_file is None:
+                word = 'Please add call dataset'
+            elif filename in added_cell_name:
+                word = 'Please enter other name'
+            elif ' ' in filename:
+                word = 'Do not enter space into filename'
+            if filename in added_cell_name or filename is None or ' ' in filename or len(filename) == 0 or call_file is None or contents is None:
                 output_cell = []
                 for x in cell_data_list:
                     a = x[0]
                     output_cell.append(dcc.Link(a, href='/Cell_Dataset/' + str(a), style={'color': 'yellow'}))
                     output_cell.append(html.Br())
                 name_cell = html.Div(children=output_cell)
-                return name_cell
+                return name_cell, True, word
             else:
                 for call in call_data_list:
                     f_name = call[0]
@@ -1734,7 +1682,7 @@ def add_cell_dataset(call_file, filename, contents, n_clicks):
                     output_cell.append(dcc.Link(a, href='/Cell_Dataset/' + str(a), style={'color': 'yellow'}))
                     output_cell.append(html.Br())
                 name_cell = html.Div(children=output_cell)
-                return name_cell
+                return name_cell, False, None
 
         except Exception as e:
             print(str(e))
@@ -1744,7 +1692,13 @@ def add_cell_dataset(call_file, filename, contents, n_clicks):
                 output_cell.append(dcc.Link(a, href='/Cell_Dataset/' + str(a), style={'color': 'yellow'}))
                 output_cell.append(html.Br())
             name_cell = html.Div(children=output_cell)
-            return name_cell
+            if str(e) == "'NoneType' object has no attribute 'get_cell_records'":
+                word = "Dataset is not cell dataset"
+            elif str(e) == "local variable 'cell_data' referenced before assignment":
+                word = "Incorrect call dataset"
+            else:
+                word = "Error in file"
+            return name_cell, True, word
 
     else:
         output_cell = []
@@ -1753,56 +1707,7 @@ def add_cell_dataset(call_file, filename, contents, n_clicks):
             output_cell.append(dcc.Link(a, href='/Cell_Dataset/' + str(a), style={'color': 'yellow'}))
             output_cell.append(html.Br())
         name_cell = html.Div(children=output_cell)
-        return name_cell
-
-
-############## error alert for cell data
-@app.callback([Output('alert_cell', 'is_open'), Output('alert_cell', 'children')],
-              [Input('select_call', 'value'), Input('upload-data_cell', 'value'), Input('filepath_cell', 'contents'),
-               Input('show_cell_dash', 'n_clicks')],
-              [State('alert_cell', 'is_open')]
-              )
-def add_cell_dataset_alert(call_file, filename, contents, n_clicks, is_open):
-    if n_clicks is not None:
-        try:
-            if contents is None:
-                word = 'Please add cell dataset'
-                return True, word
-            elif filename is None or len(filename) == 0:
-                word = 'Please enter filename'
-                return True, word
-            elif call_file is None:
-                word = 'Please add call dataset'
-                return True, word
-            elif filename in added_cell_name:
-                word = 'Please enter other name'
-                return True, word
-            elif ' ' in filename:
-                word = 'Do not enter space into filename'
-                return True, word
-            else:
-                for call in call_data_list:
-                    f_name = call[0]
-                    if call_file == f_name:
-                        cell_data = parse_contents_cell(contents, call[-1])
-                        dict_list = []
-                        for record in cell_data.get_records():
-                            dict_list.append(vars(record))
-                        break
-                return False, None
-
-        except Exception as e:
-            print(str(e))
-            if str(e) == "'NoneType' object has no attribute 'get_records'":
-                word = "Dataset is not cell dataset"
-            elif str(e) == "local variable 'cell_data' referenced before assignment":
-                word = "Incorrect call dataset"
-            else:
-                word = "Error in file"
-            return True, word
-
-    else:
-        return False, None
+        return name_cell, False, None
 
 
 ########### set button n_clicks to zero
@@ -2437,7 +2342,7 @@ added_message_name = []
 
 
 ######## add message dataset
-@app.callback(Output('message-data', 'children'),
+@app.callback([Output('message-data', 'children'), Output('alert_message', 'is_open'), Output('alert_message', 'children')],
               [Input('upload-data_message', 'value'), Input('filepath_message', 'contents'),
                Input('adding_message', 'n_clicks')],
               )
@@ -2446,15 +2351,25 @@ def add_message_dataset(filename, contents, n_clicks):
         try:
             content_message.append(contents)
             file_name_message.append(filename)
+            if contents is None:
+                word = 'Please select message dataset'
+            elif filename is None or len(filename) == 0:
+                word = 'Please enter filename'
+            elif contents in all_message_content:
+                word = 'This file already exist'
+            elif filename in added_message_name:
+                word = 'Please enter other name'
+            elif ' ' in filename:
+                word = 'Do not enter space into filename'
             if contents in all_message_content or filename in added_message_name or filename is None or ' ' in filename or len(
-                    filename) == 0:
+                    filename) == 0 or contents is None:
                 output_message = []
                 for x in message_data_list:
                     a = x[0]
                     output_message.append(dcc.Link(a, href='/Message_Dataset/' + str(a), style={'color': 'yellow'}))
                     output_message.append(html.Br())
                 name_message = html.Div(children=output_message)
-                return name_message
+                return name_message, True, word
             else:
                 message_data = parse_contents_message(contents)
                 all_users = message_data.get_all_users()
@@ -2495,7 +2410,7 @@ def add_message_dataset(filename, contents, n_clicks):
                     output_message.append(dcc.Link(a, href='/Message_Dataset/' + str(a), style={'color': 'yellow'}))
                     output_message.append(html.Br())
                 name_message = html.Div(children=output_message)
-                return name_message
+                return name_message, False, None
 
         except Exception as e:
             print(str(e))
@@ -2505,7 +2420,11 @@ def add_message_dataset(filename, contents, n_clicks):
                 output_message.append(dcc.Link(a, href='/Message_Dataset/' + str(a), style={'color': 'yellow'}))
                 output_message.append(html.Br())
             name_message = html.Div(children=output_message)
-            return name_message
+            if str(e) == "'NoneType' object has no attribute 'get_all_users'":
+                word = "Dataset is not message dataset"
+            else:
+                word = "Error in file"
+            return name_message, True, word
     else:
         output_message = []
         for x in message_data_list:
@@ -2513,47 +2432,7 @@ def add_message_dataset(filename, contents, n_clicks):
             output_message.append(dcc.Link(a, href='/Message_Dataset/' + str(a), style={'color': 'yellow'}))
             output_message.append(html.Br())
         name_message = html.Div(children=output_message)
-        return name_message
-
-
-######### show message alert
-@app.callback([Output('alert_message', 'is_open'), Output('alert_message', 'children')],
-              [Input('upload-data_message', 'value'), Input('filepath_message', 'contents'),
-               Input('adding_message', 'n_clicks')],
-              [State('alert_message', 'is_open')]
-              )
-def add_message_dataset_alert(filename, contents, n_clicks, is_open):
-    if n_clicks is not None:
-        try:
-            if contents is None:
-                word = 'Please select message dataset'
-                return True, word
-            elif filename is None or len(filename) == 0:
-                word = 'Please enter filename'
-                return True, word
-            elif contents in all_message_content:
-                word = 'This file already exist'
-                return True, word
-            elif filename in added_message_name:
-                word = 'Please enter other name'
-                return True, word
-            elif ' ' in filename:
-                word = 'Do not enter space into filename'
-                return True, word
-            else:
-                message_data = parse_contents_message(contents)
-                all_users = message_data.get_all_users()
-                return False, None
-
-        except Exception as e:
-            print(str(e))
-            if str(e) == "'NoneType' object has no attribute 'get_all_users'":
-                word = "Dataset is not message dataset"
-            else:
-                word = "Error in file"
-            return True, word
-    else:
-        return False, None
+        return name_message, False, None
 
 
 ######### set button n_clicks to zero
@@ -2594,14 +2473,13 @@ def showing_msg_data(head, tail):
 
 msg_headList = []
 msg_tailList = []
-msg_checkList = []
 
 ####### view all message data
 @app.callback(Output('show_message_data', 'children'),
               [Input('view_message', 'n_clicks'), Input('close_message', 'n_clicks'), Input('msg_head', 'value'),          
-               Input('msg_tail', 'value'), Input('check_message', 'value')
+               Input('msg_tail', 'value')
                ])
-def view_message_data(n_clicks, click2, head, tail, check):
+def view_message_data(n_clicks, click2, head, tail):
     try:
         table = html.Div()
         if click2 is not None:
@@ -2610,33 +2488,7 @@ def view_message_data(n_clicks, click2, head, tail, check):
         if n_clicks is not None:
             msg_headList.append(head)
             msg_tailList.append(tail)
-            msg_checkList.append(check)
-            if check is not None and check[0]=='all':
-                message_record = update_message_data[-1][3]
-                dict_list = []
-                for record in message_record:
-                    dict_list.append(vars(record))
-                header = list(dict_list[0].keys())
-                tab = []
-                column = []
-                for i in header:
-                    column.append(
-                        html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
-                tab.append(html.Tr(children=column))
-                for j in dict_list:
-                    value = list(j.values())
-                    row_content = []
-                    for x in value:
-                        row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
-                    tab.append(html.Tr(children=row_content, style={'height': '5px'}))
-                table = html.Div([
-                    html.Table(children=tab,
-                            style={'border-collapse': 'collapse',
-                                    'border': '1px solid black',
-                                    'width': '100%'
-                                    })
-                ])
-            elif head is None:
+            if head is None:
                 table = html.Div([
                     html.H5(children='Please enter number into head',
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
@@ -2671,14 +2523,13 @@ def close_message_data(n_clicks):
 
 ###### set 0 n_clicks view_message button
 @app.callback(Output('view_message', 'n_clicks'),
-              [Input('msg_head', 'value'), Input('msg_tail', 'value'), Input('check_message', 'value')])
-def view_message_button(head, tail, check):
+              [Input('msg_head', 'value'), Input('msg_tail', 'value')])
+def view_message_button(head, tail):
     if len(msg_headList) >= 1 and msg_headList[-1] != head:
         return None
     elif len(msg_tailList) >= 1 and msg_tailList[-1] != tail:
         return None
-    elif len(msg_checkList) >= 1 and msg_checkList[-1] != tail:
-        return None
+
 
 ########## show all message users
 @app.callback(Output('show_all_message_users', 'children'),
