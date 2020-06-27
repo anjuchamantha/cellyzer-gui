@@ -331,12 +331,14 @@ view_all_call_data = html.Div([
     html.Div([
         dcc.Checklist(
             options=[{'label': 'All Data', 'value': 'all'}],
-            id='check_call'
+            id='check_call',
+            style={'font-size': 18, 'font-style': 'normal', 'color':'blue'}
         ),
         html.Br(),
         dbc.FormGroup(
                 [
-                    dbc.Label("Number of head", html_for="example-email-row", width=2, color='black'),
+                    dbc.Label("Number of head", html_for="example-email-row", width=2, color='black',
+                                            style={'font-size': 20, 'font-style': 'normal'}),
                     dbc.Col(
                         dbc.Input(
                             type="number", id="call_head", placeholder="Enter number",
@@ -349,7 +351,8 @@ view_all_call_data = html.Div([
             ),
             dbc.FormGroup(
                 [
-                    dbc.Label("Number of tail", html_for="example-email-row", width=2, color='black'),
+                    dbc.Label("Number of tail", html_for="example-email-row", width=2, color='black',
+                                            style={'font-size': 20, 'font-style': 'normal'}),
                     dbc.Col(
                         dbc.Input(
                             type="number", id="call_tail", placeholder="Enter number",
@@ -830,6 +833,7 @@ def call_visu_sidebar(pathname):
         name = html.Div(children=output_call)
         return name
 
+
 def showing_call_data(head, tail):
     call_data = update_call_data[-1][-1]
     show_data = cz.utils.print_dataset(dataset_obj=call_data, head=head, tail=tail)
@@ -864,8 +868,7 @@ check_List = []
 ######### view call dataset
 @app.callback(Output('show_data', 'children'),
               [Input('view', 'n_clicks'), Input('close', 'n_clicks'), Input('call_head', 'value'),          
-               Input('call_tail', 'value'), 
-                 Input('check_call', 'value')
+               Input('call_tail', 'value'), Input('check_call', 'value')
                 ])
 def update_table(n_clicks, click2, head, tail, check):
     try:
@@ -874,37 +877,34 @@ def update_table(n_clicks, click2, head, tail, check):
             return None
 
         if n_clicks is not None:
-            # print(check)
             head_list.append(head)
             tail_list.append(tail)
             check_List.append(check)
             if check is not None and check[0]=='all':
-                print('hai')
                 record_call = update_call_data[-1][3]
-                table = showing_call_data(len(record_call), 0)
-                # dict_list = []
-                # for record in record_call:
-                #     dict_list.append(vars(record))
-                # header = list(dict_list[0].keys())
-                # tab = []
-                # column = []
-                # for i in header:
-                #     column.append(
-                #         html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
-                # tab.append(html.Tr(children=column))
-                # for j in dict_list:
-                #     value = list(j.values())
-                #     row_content = []
-                #     for x in value:
-                #         row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
-                #     tab.append(html.Tr(children=row_content, style={'height': '5px'}))
-                # table = html.Div([
-                #     html.Table(children=tab,
-                #             style={'border-collapse': 'collapse',
-                #                     'border': '1px solid black',
-                #                     'width': '100%'
-                #                     })
-                # ])
+                dict_list = []
+                for record in record_call:
+                    dict_list.append(vars(record))
+                header = list(dict_list[0].keys())
+                tab = []
+                column = []
+                for i in header:
+                    column.append(
+                        html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
+                tab.append(html.Tr(children=column))
+                for j in dict_list:
+                    value = list(j.values())
+                    row_content = []
+                    for x in value:
+                        row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
+                    tab.append(html.Tr(children=row_content, style={'height': '5px'}))
+                table = html.Div([
+                    html.Table(children=tab,
+                            style={'border-collapse': 'collapse',
+                                    'border': '1px solid black',
+                                    'width': '100%'
+                                    })
+                ])
             elif head is None:
                 table = html.Div([
                     html.H5(children='Please enter number into head',
@@ -922,31 +922,8 @@ def update_table(n_clicks, click2, head, tail, check):
                     html.H5(children='Please enter number greater than 0 into tail',
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
             else:
-                print(head, tail)
                 table = showing_call_data(head, tail)
-                # call_data = update_call_data[-1][-1]
-                # show_data = cz.utils.print_dataset(dataset_obj=call_data, head=head, tail=tail)
-                # header = show_data[0]
-                # dict_list = show_data[1]
-                # tab = []
-                # column = []
-                # for i in header:
-                #     column.append(
-                #         html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
-                # tab.append(html.Tr(children=column))
-                # for j in dict_list:
-                #     value = list(j.values())
-                #     row_content = []
-                #     for x in value:
-                #         row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
-                #     tab.append(html.Tr(children=row_content, style={'height': '5px'}))
-                # table = html.Div([
-                #     html.Table(children=tab,
-                #             style={'border-collapse': 'collapse',
-                #                     'border': '1px solid black',
-                #                     'width': '100%'
-                #                     })
-                # ])
+
             return table
 
     except Exception as e:
@@ -2276,6 +2253,41 @@ view_all_message_data = html.Div([
     navbar_message_dataset_visualize,
     messagepagevisualizesidebar,
     html.Div([
+        dcc.Checklist(
+            options=[{'label': 'All Data', 'value': 'all'}],
+            id='check_message',
+            style={'font-size': 18, 'font-style': 'normal', 'color':'blue'}
+        ),
+        html.Br(),
+        dbc.FormGroup(
+                [
+                    dbc.Label("Number of head", html_for="example-email-row", width=2, color='black',
+                                            style={'font-size': 20, 'font-style': 'normal'}),
+                    dbc.Col(
+                        dbc.Input(
+                            type="number", id="msg_head", placeholder="Enter number",
+                            style={'width': 300}
+                        ),
+                        width=10,
+                    ),
+                ],
+                row=True,
+            ),
+            dbc.FormGroup(
+                [
+                    dbc.Label("Number of tail", html_for="example-email-row", width=2, color='black',
+                                                style={'font-size': 20, 'font-style': 'normal'}),
+                    dbc.Col(
+                        dbc.Input(
+                            type="number", id="msg_tail", placeholder="Enter number",
+                            style={'width': 300}
+                        ),
+                        width=10,
+                    ),
+                ],
+                row=True,
+            ),
+        html.Br(),
         dbc.Button('VIEW DATA', id='view_message', color='success',
                    className='sample_call_dataset_viewdata'),
         dbc.Button('CLOSED DATA', id='close_message', color='danger',
@@ -2554,40 +2566,95 @@ def adding_message_button(filename, contents):
         return None
 
 
+def showing_msg_data(head, tail):
+    message_data = update_message_data[-1][-1]
+    show_data = cz.utils.print_dataset(dataset_obj=message_data, head=head, tail=tail)
+    header = show_data[0]
+    dict_list = show_data[1]
+    tab = []
+    column = []
+    for i in header:
+        column.append(
+            html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
+    tab.append(html.Tr(children=column))
+    for j in dict_list:
+        value = list(j.values())
+        row_content = []
+        for x in value:
+            row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
+        tab.append(html.Tr(children=row_content, style={'height': '5px'}))
+    table = html.Div([
+        html.Table(children=tab,
+                    style={'border-collapse': 'collapse',
+                            'border': '1px solid black',
+                            'width': '100%'
+                            })
+    ])
+    return table
+
+msg_headList = []
+msg_tailList = []
+msg_checkList = []
+
 ####### view all message data
 @app.callback(Output('show_message_data', 'children'),
-              [Input('view_message', 'n_clicks'), Input('close_message', 'n_clicks')
+              [Input('view_message', 'n_clicks'), Input('close_message', 'n_clicks'), Input('msg_head', 'value'),          
+               Input('msg_tail', 'value'), Input('check_message', 'value')
                ])
-def view_message_data(n_clicks, click2):
+def view_message_data(n_clicks, click2, head, tail, check):
     try:
         table = html.Div()
         if click2 is not None:
             return None
 
         if n_clicks is not None:
-            message_data = update_message_data[-1][-1]
-            show_data = cz.utils.print_dataset(dataset_obj=message_data, head=50, tail=50)
-            header = show_data[0]
-            dict_list = show_data[1]
-            tab = []
-            column = []
-            for i in header:
-                column.append(
-                    html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
-            tab.append(html.Tr(children=column))
-            for j in dict_list:
-                value = list(j.values())
-                row_content = []
-                for x in value:
-                    row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
-                tab.append(html.Tr(children=row_content, style={'height': '5px'}))
-            table = html.Div([
-                html.Table(children=tab,
-                           style={'border-collapse': 'collapse',
-                                  'border': '1px solid black',
-                                  'width': '100%'
-                                  })
-            ])
+            msg_headList.append(head)
+            msg_tailList.append(tail)
+            msg_checkList.append(check)
+            if check is not None and check[0]=='all':
+                message_record = update_message_data[-1][3]
+                dict_list = []
+                for record in message_record:
+                    dict_list.append(vars(record))
+                header = list(dict_list[0].keys())
+                tab = []
+                column = []
+                for i in header:
+                    column.append(
+                        html.Th(i, style={'border': '1px solid black', 'background-color': '#4CAF50', 'color': 'white'}))
+                tab.append(html.Tr(children=column))
+                for j in dict_list:
+                    value = list(j.values())
+                    row_content = []
+                    for x in value:
+                        row_content.append(html.Td(x, style={'border': '1px solid black', 'padding-left': '10px'}))
+                    tab.append(html.Tr(children=row_content, style={'height': '5px'}))
+                table = html.Div([
+                    html.Table(children=tab,
+                            style={'border-collapse': 'collapse',
+                                    'border': '1px solid black',
+                                    'width': '100%'
+                                    })
+                ])
+            elif head is None:
+                table = html.Div([
+                    html.H5(children='Please enter number into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif tail is None:
+                table = html.Div([
+                    html.H5(children='Please enter number into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif  head is not None and head <= 0:
+                table = html.Div([
+                    html.H5(children='Please enter number greater than 0 into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif tail is not None and tail <= 0:
+                table = html.Div([
+                    html.H5(children='Please enter number greater than 0 into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            else:
+                table = showing_msg_data(head, tail)
+
             return table
 
     except Exception as e:
@@ -2602,6 +2669,16 @@ def close_message_data(n_clicks):
     if n_clicks is not None:
         return None
 
+###### set 0 n_clicks view_message button
+@app.callback(Output('view_message', 'n_clicks'),
+              [Input('msg_head', 'value'), Input('msg_tail', 'value'), Input('check_message', 'value')])
+def view_message_button(head, tail, check):
+    if len(msg_headList) >= 1 and msg_headList[-1] != head:
+        return None
+    elif len(msg_tailList) >= 1 and msg_tailList[-1] != tail:
+        return None
+    elif len(msg_checkList) >= 1 and msg_checkList[-1] != tail:
+        return None
 
 ########## show all message users
 @app.callback(Output('show_all_message_users', 'children'),
