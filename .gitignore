@@ -2,3 +2,9 @@ venv
 *.pyc
 env
 /outputs/*
+active_time_bar_chart.html
+connection_matrix.html
+connection_network.html
+population_map.html
+trip_map.html
+home_work_location.html
