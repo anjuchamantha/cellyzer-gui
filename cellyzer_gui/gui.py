@@ -7,6 +7,7 @@ import dash_html_components as html
 import dash_admin_components as dac
 import dash_bootstrap_components as dbc
 import dash_table
+import folium
 import os
 import sys
 
@@ -1484,10 +1485,8 @@ records_of_cell = html.Div([
     html.Div([
         dbc.FormGroup(
             [
-                dbc.Button("Select Cell ID", color="primary", className="sample_call_dataset_viewdata",
+                dbc.Button("Load Cell ID", color="primary", className="sample_call_dataset_viewdata",
                            id='select_id_record_specific'),
-                html.P('Click the "Select Cell ID" button before selecting ID',
-                       style={'color': 'red', 'font-size': 16}),
                 dbc.Col(
                     dcc.Dropdown(
                         id="cell_id",
@@ -1513,10 +1512,8 @@ population_around_cell = html.Div([
         html.P('Do not select Id for getting population around all cells', style={'color': 'green', 'font-size': 20}),
         dbc.FormGroup(
             [
-                dbc.Button("Select Cell ID", color="primary", className="sample_call_dataset_viewdata",
+                dbc.Button("Load Cell ID", color="primary", className="sample_call_dataset_viewdata",
                            id='select_id_population'),
-                html.P('Click the "Select Cell ID" button before selecting ID',
-                       style={'color': 'red', 'font-size': 16}),
                 dbc.Col(
                     dcc.Dropdown(
                         id="cell_id_population",
@@ -1774,6 +1771,14 @@ def get_cell_records(n_clicks, cell_id):
                 list_cell.append(html.Br())
                 list_cell.append(html.H4('Longitude of cell id ' + str(cell_id) + ' :   ' + str(longitude),
                                          style={'font-weight': 'bold', 'color': 'red'}))
+                location = [latitude, longitude]
+                map1 = folium.Map(location=location, zoom_start=12)
+                marker_cluster = folium.plugins.MarkerCluster().add_to(map1)
+                folium.Marker(location=location, popup='cell id: '+cell_id).add_to(marker_cluster)
+                file_path = 'outputs\\' + 'map' + '.html'
+                map1.save(file_path)
+                list_cell.append(html.Br())
+                list_cell.append(html.Iframe(srcDoc=open(file_path, 'r').read(), width='100%', height=500))
             return list_cell
 
         except Exception as e:

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<head>    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.5.1/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://rawcdn.githack.com/python-visualization/folium/master/folium/templates/leaflet.awesome.rotate.css"/>
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_29c82ecd625c446d843f48e075dff06c {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+            </style>
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>    
+    
+            <div class="folium-map" id="map_29c82ecd625c446d843f48e075dff06c" ></div>
+        
+</body>
+<script>    
+    
+            var map_29c82ecd625c446d843f48e075dff06c = L.map(
+                "map_29c82ecd625c446d843f48e075dff06c",
+                {
+                    center: [42.386722, -71.138778],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 12,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_4a650540520c460c81c258033ef6c43f = L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "Data by \u0026copy; \u003ca href=\"http://openstreetmap.org\"\u003eOpenStreetMap\u003c/a\u003e, under \u003ca href=\"http://www.openstreetmap.org/copyright\"\u003eODbL\u003c/a\u003e.", "detectRetina": false, "maxNativeZoom": 18, "maxZoom": 18, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            ).addTo(map_29c82ecd625c446d843f48e075dff06c);
+        
+    
+            var marker_cluster_bec9bec39c4b4790b426a9bbf215c18d = L.markerClusterGroup(
+                {}
+            );
+            map_29c82ecd625c446d843f48e075dff06c.addLayer(marker_cluster_bec9bec39c4b4790b426a9bbf215c18d);
+        
+    
+            var marker_26febc91d1424b439e61a7af9c075b97 = L.marker(
+                [42.386722, -71.138778],
+                {}
+            ).addTo(marker_cluster_bec9bec39c4b4790b426a9bbf215c18d);
+        
+    
+        var popup_b38345f401f64fd9b5b4c9319e9324a7 = L.popup({"maxWidth": "100%"});
+
+        
+            var html_00139a5528aa4dfdaa6126917d8432d0 = $(`<div id="html_00139a5528aa4dfdaa6126917d8432d0" style="width: 100.0%; height: 100.0%;">cell id2</div>`)[0];
+            popup_b38345f401f64fd9b5b4c9319e9324a7.setContent(html_00139a5528aa4dfdaa6126917d8432d0);
+        
+
+        marker_26febc91d1424b439e61a7af9c075b97.bindPopup(popup_b38345f401f64fd9b5b4c9319e9324a7)
+        ;
+
+        
+    
+</script>
