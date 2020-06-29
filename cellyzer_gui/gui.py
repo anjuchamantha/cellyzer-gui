@@ -223,7 +223,7 @@ callpagesidebar = dac.Sidebar(
             dac.SidebarButton(id='add-cell-records', label='Home', icon='home', href='/'),
             dac.SidebarButton(id='add-cell-records-dataset', label='Datasets', icon='box', href='/Dataset'),
             html.Div(id="call-data", style={"margin-left": "40px", "margin-top": '10px'}),
-            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10}),
+            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10, 'text-decoration': 'underline'}),
             html.Div(id="all_dataset", style={"margin-left": "40px"}),
         ]
     ),
@@ -291,8 +291,8 @@ callpagevisualizesidebar = dac.Sidebar(
         [
             dac.SidebarButton(id='add-cell-records', label='Home', icon='home', href='/'),
             dac.SidebarButton(id='add-cell-records-dataset', label='Datasets', icon='box', href='/Dataset'),
-            html.P('Call Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white'}),
-            html.Div(id="call_data_visu_sidebar", style={"margin-left": "40px", "margin-top": '10px'})
+            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10, 'text-decoration': 'underline'}),
+            html.Div(id="all_dataset_visu", style={"margin-left": "40px"}),
         ]
     ),
     title='CELLYZER',
@@ -486,7 +486,7 @@ close_contacts = html.Div([
         dbc.Button('Close Contacts', id='close_contacts', color='success', className='sample_call_dataset_viewdata')],
         className='sample_call_dataset_view_div', style={"margin": 20, "margin-top": 40}
     ),
-    html.Div(id='show_close_contact', className='sample_call_dataset_show_all_users'),
+    html.Div(id='show_close_contact', className='sample_call_dataset_show_all_users', style={'margin-left':20}),
 ],
     className='index_page_div')
 
@@ -669,7 +669,6 @@ def add_call_dataset(filename, content, n_clicks, real_file):
                                                  href='/Call_Dataset/{}/visualize_connection'.format(filename))))
                 call_option.append([filename, option])
                 output_call = []
-                # output_call.append(dcc.Link(filename, href='/Call_Dataset/' + str(filename), style={'color': 'yellow'}))
                 for x in tempory:
                     a = x[0]
                     output_call.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'yellow'}))
@@ -784,21 +783,6 @@ def file_name2(pathname):
             return a[1]
 
 
-######## return all call file names into call visualize sidebar
-@app.callback(dash.dependencies.Output('call_data_visu_sidebar', 'children'),
-              [dash.dependencies.Input('url', 'pathname')
-               ])
-def call_visu_sidebar(pathname):
-    if len(call_data_list) >= 1:
-        output_call = []
-        for x in call_data_list:
-            a = x[0]
-            output_call.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'yellow'}))
-            output_call.append(html.Br())
-        name = html.Div(children=output_call)
-        return name
-
-
 def showing_call_data(head, tail):
     call_data = update_call_data[-1][-1]
     show_data = cz.utils.print_dataset(dataset_obj=call_data, head=head, tail=tail)
@@ -857,6 +841,22 @@ def update_table(n_clicks, head, tail):
                 table = html.Div([
                     html.H5(children='Please enter number greater than 0 into tail',
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif  head is not None and head > 5000:
+                table = html.Div([
+                    html.H5(children='Please enter number less than 5000 into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})]) 
+            elif tail is not None and tail > 5000:
+                table = html.Div([
+                    html.H5(children='Please enter number less than 5000 into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})]) 
+            elif  str(type(head))== "<class 'float'>":
+                table = html.Div([
+                    html.H5(children='Please enter positive integer into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])  
+            elif  str(type(tail))== "<class 'float'>":
+                table = html.Div([
+                    html.H5(children='Please enter positive integer into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])               
             else:
                 table = showing_call_data(head, tail)
 
@@ -1068,12 +1068,16 @@ def show_close_contatcs(user_3, contact, n_clicks):
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
             elif contact <= 0:
                 table = html.Div([
-                    html.H5(children='Please enter number  more than zero',
+                    html.H5(children='Please enter number  greater than zero',
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
             elif user_3 not in call_users:
                 table = html.Div([
                     html.H5(children='User does not exist',
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif  str(type(contact))== "<class 'float'>":
+                table = html.Div([
+                    html.H5(children='Please enter positive integer',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])   
             else:
                 connected_users = call_data.get_close_contacts(user_3, contact)
                 if len(connected_users) == 0:
@@ -1145,7 +1149,7 @@ def show_active_time(n_clicks, user_4):
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
             else:
                 active_time = call_data.get_most_active_time(str(user_4))
-                cz.visualization.active_time_bar_chart(active_time, gui=True, dataset_id=str(user_4))
+                cz.visualization.active_time_bar_chart(active_time, gui=True, dataset_id=str(user_4), user=str(user_4))
             return table
 
     except Exception as e:
@@ -1342,7 +1346,7 @@ cellpagesidebar = dac.Sidebar(
             dac.SidebarButton(id='add-cell-records', label='Home', icon='home', href='/'),
             dac.SidebarButton(id='add-cell-records-dataset', label='Datasets', icon='box', href='/Dataset'),
             html.Div(id="cell-data", style={"margin-left": "40px"}),
-            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10}),
+            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10, 'text-decoration': 'underline'}),
             html.Div(id="all_dataset", style={"margin-left": "40px"}),
         ]
     ),
@@ -1428,8 +1432,8 @@ cellpagevisualizesidebar = dac.Sidebar(
         [
             dac.SidebarButton(id='add-cell-records', label='Home', icon='home', href='/'),
             dac.SidebarButton(id='add-cell-records-dataset', label='Datasets', icon='box', href='/Dataset'),
-            html.P('Cell Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white'}),
-            html.Div(id="cell_data_visu_sidebar", style={"margin-left": "40px", "margin-top": '10px'})
+            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10, 'text-decoration': 'underline'}),
+            html.Div(id="all_dataset_visu", style={"margin-left": "40px"}),
         ]
     ),
     title='CELLYZER',
@@ -1485,7 +1489,7 @@ records_of_cell = html.Div([
     html.Div([
         dbc.FormGroup(
             [
-                dbc.Button("Load Cell ID", color="primary", className="sample_call_dataset_viewdata",
+                dbc.Button("Load Cell IDs", color="primary", className="sample_call_dataset_viewdata",
                            id='select_id_record_specific'),
                 dbc.Col(
                     dcc.Dropdown(
@@ -1512,7 +1516,7 @@ population_around_cell = html.Div([
         html.P('Do not select Id for getting population around all cells', style={'color': 'green', 'font-size': 20}),
         dbc.FormGroup(
             [
-                dbc.Button("Load Cell ID", color="primary", className="sample_call_dataset_viewdata",
+                dbc.Button("Load Cell IDs", color="primary", className="sample_call_dataset_viewdata",
                            id='select_id_population'),
                 dbc.Col(
                     dcc.Dropdown(
@@ -1943,21 +1947,6 @@ def get_navbar_visu_cell(pathname):
             return SimpleTitleBar("Cell Dataset :<%s> Trip Visualization" % path_set[-2])
 
 
-######## return all cell file names into cell visualize sidebar
-@app.callback(dash.dependencies.Output('cell_data_visu_sidebar', 'children'),
-              [dash.dependencies.Input('url', 'pathname')
-               ])
-def cell_visu_sidebar(pathname):
-    if len(call_data_list) >= 1:
-        output_cell = []
-        for x in cell_data_list:
-            a = x[0]
-            output_cell.append(dcc.Link(a, href='/Cell_Dataset/' + str(a), style={'color': 'yellow'}))
-            output_cell.append(html.Br())
-        name_cell = html.Div(children=output_cell)
-        return name_cell
-
-
 def get_cell_users():
     all_users = update_cell_data[-1][2]
     add_call = []
@@ -2014,7 +2003,7 @@ messagepagesidebar = dac.Sidebar(
             dac.SidebarButton(id='add-cell-records', label='Home', icon='home', href='/'),
             dac.SidebarButton(id='add-cell-records-dataset', label='Datasets', icon='box', href='/Dataset'),
             html.Div(id="message-data", style={"margin-left": "40px", "margin-top": 10}),
-            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10}),
+            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10, 'text-decoration': 'underline'}),
             html.Div(id="all_dataset", style={"margin-left": "40px"}),
         ]
     ),
@@ -2084,8 +2073,8 @@ messagepagevisualizesidebar = dac.Sidebar(
         [
             dac.SidebarButton(id='add-cell-records', label='Home', icon='home', href='/'),
             dac.SidebarButton(id='add-cell-records-dataset', label='Datasets', icon='box', href='/Dataset'),
-            html.P('Message Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white'}),
-            html.Div(id="message_data_visu_sidebar", style={"margin-left": "40px", "margin-top": 10})
+            html.P('Available Datasets', style={"margin-left": "40px", 'font-size': 20, 'color': 'white', "margin-top": 10, 'text-decoration': 'underline'}),
+            html.Div(id="all_dataset_visu", style={"margin-left": "40px"}),
         ]
     ),
     title='CELLYZER',
@@ -2462,6 +2451,22 @@ def view_message_data(n_clicks, head, tail):
                 table = html.Div([
                     html.H5(children='Please enter number greater than 0 into tail',
                             style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif  head is not None and head > 5000:
+                table = html.Div([
+                    html.H5(children='Please enter number les than 5000 into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif tail is not None and tail > 5000:
+                table = html.Div([
+                    html.H5(children='Please enter number less than 5000 into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])
+            elif  str(type(head))== "<class 'float'>":
+                table = html.Div([
+                    html.H5(children='Please enter positive integer into head',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])  
+            elif  str(type(tail))== "<class 'float'>":
+                table = html.Div([
+                    html.H5(children='Please enter positive integer into tail',
+                            style={'color': 'red', 'font-size': '20px', 'padding-left': '20px'})])  
             else:
                 table = showing_msg_data(head, tail)
 
@@ -2745,21 +2750,6 @@ def get_navbar_visu_message(pathname):
             return SimpleTitleBar("Message Dataset :<%s> Visualize Connection" % path_set[-2])
 
 
-######## return all message file names into message visualize sidebar
-@app.callback(dash.dependencies.Output('message_data_visu_sidebar', 'children'),
-              [dash.dependencies.Input('url', 'pathname')
-               ])
-def message_visu_sidebar(pathname):
-    if len(message_data_list) >= 1:
-        output_message = []
-        for x in message_data_list:
-            a = x[0]
-            output_message.append(dcc.Link(a, href='/Message_Dataset/' + str(a), style={'color': 'yellow'}))
-            output_message.append(html.Br())
-        name_message = html.Div(children=output_message)
-        return name_message
-
-
 def get_msg_call_users():
     msg_users = update_message_data[-1][2]
     add_msg = []
@@ -2806,6 +2796,7 @@ def select_msg_users_visu_conn(n_clicks):
 
 #### over message dataset
 
+####### show all available datasets in the dashboard of call, message, cell dataset page
 @app.callback(dash.dependencies.Output('all_dataset', 'children'),
               [dash.dependencies.Input('url', 'pathname')
                ])
@@ -2814,7 +2805,7 @@ def show_all_dataset(pathname):
     if pathname =='/Call_Dataset' or pathname == '/Cell_Dataset' or pathname == '/Message_Dataset':
         if len(call_data_list)>0:
             tempory.clear()
-            output.append(html.P('Call Datasets', style={'font-size': 17, 'color': 'white'}))
+            output.append(html.P('Call Datasets', style={'font-size': 17, 'color': 'white', 'margin-bottom':0}))
             for x in call_data_list:
                 a = x[0]
                 output.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'lightgreen'}))
@@ -2822,7 +2813,7 @@ def show_all_dataset(pathname):
         if len(cell_data_list)>0:
             tempory_cell.clear()
             output.append(html.Br())
-            output.append(html.P('Cell Datasets', style={'font-size': 17, 'color': 'white'}))
+            output.append(html.P('Cell Datasets', style={'font-size': 17, 'color': 'white', 'margin-bottom':0}))
             for x in cell_data_list:
                 a = x[0]
                 output.append(dcc.Link(a, href='/Cell_Dataset/' + str(a), style={'color': 'lightgreen'}))
@@ -2830,7 +2821,38 @@ def show_all_dataset(pathname):
         if len(message_data_list)>0:
             tempory_message.clear()
             output.append(html.Br())
-            output.append(html.P('Message Datasets', style={'font-size': 17, 'color': 'white'}))
+            output.append(html.P('Message Datasets', style={'font-size': 17, 'color': 'white', 'margin-bottom':0}))
+            for x in message_data_list:
+                a = x[0]
+                output.append(dcc.Link(a, href='/Message_Dataset/' + str(a), style={'color': 'lightgreen'}))
+                output.append(html.Br())
+
+    return html.Div(children=output)
+
+####### show all available datasets in the dashboard of all visualization page
+@app.callback(dash.dependencies.Output('all_dataset_visu', 'children'),
+              [dash.dependencies.Input('url', 'pathname')
+               ])
+def show_all_dataset_visu(pathname):
+    path_set = pathname.split('/')
+    output = []
+    if len(path_set) >=3:
+        if len(call_data_list)>0:
+            output.append(html.P('Call Datasets', style={'font-size': 17, 'color': 'white', 'margin-bottom':0}))
+            for x in call_data_list:
+                a = x[0]
+                output.append(dcc.Link(a, href='/Call_Dataset/' + str(a), style={'color': 'lightgreen'}))
+                output.append(html.Br())
+        if len(cell_data_list)>0:
+            output.append(html.Br())
+            output.append(html.P('Cell Datasets', style={'font-size': 17, 'color': 'white', 'margin-bottom':0}))
+            for x in cell_data_list:
+                a = x[0]
+                output.append(dcc.Link(a, href='/Cell_Dataset/' + str(a), style={'color': 'lightgreen'}))
+                output.append(html.Br())
+        if len(message_data_list)>0:
+            output.append(html.Br())
+            output.append(html.P('Message Datasets', style={'font-size': 17, 'color': 'white', 'margin-bottom':0}))
             for x in message_data_list:
                 a = x[0]
                 output.append(dcc.Link(a, href='/Message_Dataset/' + str(a), style={'color': 'lightgreen'}))
