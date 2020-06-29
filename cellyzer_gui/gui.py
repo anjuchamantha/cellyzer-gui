@@ -733,18 +733,19 @@ def file_name_call(pathname):
               [dash.dependencies.Input('url', 'pathname')
                ])
 def call_record_card_home(pathname):
-    if len(call_data_list) > 0:
-        call_data_name = []
-        for x in call_data_list:
-            a = x[0]
-            record = len(x[3])
-            link = '/Call_Dataset/' + str(a)
-            call_data_name.append(DataSetCard(a, record, link))
-        call_data_name.append(AddDataSetCard('call'))
-        return call_data_name
+    if pathname == '/Dataset':
+        if len(call_data_list) > 0:
+            call_data_name = []
+            for x in call_data_list:
+                a = x[0]
+                record = len(x[3])
+                link = '/Call_Dataset/' + str(a)
+                call_data_name.append(DataSetCard(a, record, link))
+            call_data_name.append(AddDataSetCard('call'))
+            return call_data_name
 
-    else:
-        return AddDataSetCard('call')
+        else:
+            return AddDataSetCard('call')
 
 
 ########### get call visualize option for navigation bar
@@ -1917,17 +1918,18 @@ def cell_option_visu(pathname):
               [dash.dependencies.Input('url', 'pathname')
                ])
 def cell_record_card_home(pathname):
-    if len(cell_data_list) > 0:
-        cell_data_name = []
-        for x in cell_data_list:
-            a = x[0]
-            record = len(x[3])
-            link = '/Cell_Dataset/' + str(a)
-            cell_data_name.append(DataSetCard(a, record, link))
-        cell_data_name.append(AddDataSetCard('cell'))
-        return cell_data_name
-    else:
-        return AddDataSetCard('cell')
+    if pathname == '/Dataset':
+        if len(cell_data_list) > 0:
+            cell_data_name = []
+            for x in cell_data_list:
+                a = x[0]
+                record = len(x[3])
+                link = '/Cell_Dataset/' + str(a)
+                cell_data_name.append(DataSetCard(a, record, link))
+            cell_data_name.append(AddDataSetCard('cell'))
+            return cell_data_name
+        else:
+            return AddDataSetCard('cell')
 
 
 ########### get cell visualize option for navigation bar
@@ -2718,17 +2720,18 @@ def message_option_visu(pathname):
               [dash.dependencies.Input('url', 'pathname')
                ])
 def message_record_card_home(pathname):
-    if len(message_data_list) > 0:
-        message_data_name = []
-        for x in message_data_list:
-            a = x[0]
-            record = len(x[3])
-            link = '/Message_Dataset/' + str(a)
-            message_data_name.append(DataSetCard(a, record, link))
-        message_data_name.append(AddDataSetCard('message'))
-        return message_data_name
-    else:
-        return AddDataSetCard('message')
+    if pathname == '/Dataset':
+        if len(message_data_list) > 0:
+            message_data_name = []
+            for x in message_data_list:
+                a = x[0]
+                record = len(x[3])
+                link = '/Message_Dataset/' + str(a)
+                message_data_name.append(DataSetCard(a, record, link))
+            message_data_name.append(AddDataSetCard('message'))
+            return message_data_name
+        else:
+            return AddDataSetCard('message')
 
 
 ########### get message visualize option for navigation bar
