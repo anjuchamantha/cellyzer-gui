@@ -277,8 +277,10 @@ call_dataset = html.Div([
         html.Div([
             dbc.Button('Add Dataset', color="primary", className="mr-1 float-right", id='adding_call')
         ], style={"margin-top": '40px'}),
+        dbc.Alert(id='call_content_add', is_open=False, duration=1500,
+                  style={'width': 400, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'}),
         dbc.Alert(id='alert', dismissable=True, is_open=False,
-                  style={'width': 700, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'})
+                  style={'width': 400, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'})
     ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": 60}),
 ],
     className='index_page_div'
@@ -591,6 +593,15 @@ def parse_contents(contents):
         return dataset_obj
     except Exception as e:
         print(e)
+
+
+#### show message after adding call content
+@app.callback([Output('call_content_add', 'is_open'), Output('call_content_add', 'children')],
+              [Input('filepath', 'contents'), Input('filepath', 'filename')])
+def adding_call_content(contents, filename):
+    if contents is not None:
+        word = filename + " is selected"
+        return True, word
 
 
 ###### add call data
@@ -1417,8 +1428,10 @@ cell_dataset = html.Div([
         html.Div([
             dbc.Button("Add DataSet", color="primary", className="mr-1 float-right", id='show_cell_dash')
         ], style={"margin-top": '40px'}),
+        dbc.Alert(id='cell_content_add', is_open=False, duration=1500,
+                  style={'width': 400, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'}),
         dbc.Alert(id='alert_cell', dismissable=True, is_open=False,
-                  style={'width': 700, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'})
+                  style={'width': 400, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'})
     ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": 60}),
 ],
     className='index_page_div'
@@ -1585,6 +1598,15 @@ adding_call = []
 cell_file_name = []
 added_cell_name = []
 tempory_cell = []
+
+
+#### show message after adding cell content
+@app.callback([Output('cell_content_add', 'is_open'), Output('cell_content_add', 'children')],
+              [Input('filepath_cell', 'contents'), Input('filepath_cell', 'filename')])
+def adding_cell_content(contents, filename):
+    if contents is not None:
+        word = filename + " is selected"
+        return True, word
 
 
 ####### add cell data
@@ -2059,8 +2081,10 @@ message_dataset = html.Div([
         html.Div([
             dbc.Button("Add DataSet", color="primary", className="mr-1 float-right", id='adding_message')
         ], style={"margin-top": '40px'}),
+        dbc.Alert(id='msg_content_add', is_open=False, duration=1500,
+                  style={'width': 400, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'}),
         dbc.Alert(id='alert_message', dismissable=True, is_open=False,
-                  style={'width': 700, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'})
+                  style={'width': 400, 'background-color': 'red', 'font-size': '18px', 'text-align':'center'})
     ], className='call_page_welcome_div', style={'margin': '20px', "margin-top": 60}),
 ],
     className='index_page_div'
@@ -2290,10 +2314,19 @@ added_message_name = []
 tempory_message = []
 
 
+#### show message after adding content
+@app.callback([Output('msg_content_add', 'is_open'), Output('msg_content_add', 'children')],
+              [Input('filepath_message', 'contents'), Input('filepath_message', 'filename')])
+def adding_message_content(contents, filename):
+    if contents is not None:
+        word = filename + " is selected"
+        return True, word
+
+            
 ######## add message dataset
 @app.callback([Output('message-data', 'children'), Output('alert_message', 'is_open'), Output('alert_message', 'children')],
               [Input('upload-data_message', 'value'), Input('filepath_message', 'contents'),
-               Input('adding_message', 'n_clicks'), Input('filepath_message', 'contents')],
+               Input('adding_message', 'n_clicks'), Input('filepath_message', 'filename')],
               )
 def add_message_dataset(filename, contents, n_clicks, real_file):
     if n_clicks is not None:
