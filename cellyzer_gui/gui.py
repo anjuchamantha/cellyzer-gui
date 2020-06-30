@@ -99,7 +99,7 @@ homepageSidebar = dac.Sidebar(
     ),
     title='CELLYZER',
     color="primary",
-    brand_color="white",
+    brand_color="secondary",
     src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
@@ -2963,4 +2963,4 @@ def display_page(pathname):
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, dev_tools_ui=False)
