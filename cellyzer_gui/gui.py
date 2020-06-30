@@ -133,8 +133,8 @@ home_page = html.Div([
             html.Hr(),
             html.P("Instructions", className="lead", style={'text-align': 'center', 'font-size': '30px'}),
             html.Hr(),
-            html.Div([
-                dbc.Row([
+            dbc.Row([
+                dbc.Col([
                     html.Div([
                         dbc.Card([
                             dbc.CardImg(src='assets/add-call.gif', top=True),
@@ -144,8 +144,8 @@ home_page = html.Div([
                             ]),
                         ]),
                     ], style={'float': 'center'}),
-                ], style={'display': 'block'}),
-                dbc.Row([
+                ], style={'display': 'inline-block'}),
+                dbc.Col([
                     html.Div([
                         dbc.Card([
                             dbc.CardImg(src='assets/functions.gif', top=True),
@@ -155,8 +155,8 @@ home_page = html.Div([
                             ])
                         ]),
                     ], style={'float': 'center'}),
-                ], style={'display': 'block'}),
-            ], style={'margin': '0rem 12rem'})
+                ], style={'display': 'inline-block'}),
+            ], style={'margin': '0rem 0rem'})
         ],
         style={"margin": 20, "margin-top": 60, 'margin-left': 80}
     ),
