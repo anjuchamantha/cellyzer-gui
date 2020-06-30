@@ -99,8 +99,8 @@ homepageSidebar = dac.Sidebar(
     ),
     title='CELLYZER',
     color="primary",
-    brand_color="secondary",
-    src="assets/logo-cellyzer.png",
+    brand_color="white",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -230,7 +230,7 @@ callpagesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="assets/logo-cellyzer.png",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -298,7 +298,7 @@ callpagevisualizesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="assets/logo-cellyzer.png",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -1354,7 +1354,7 @@ cellpagesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="assets/logo-cellyzer.png",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -1440,7 +1440,7 @@ cellpagevisualizesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="assets/logo-cellyzer.png",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -2012,7 +2012,7 @@ messagepagesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="assets/logo-cellyzer.png",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
@@ -2082,7 +2082,7 @@ messagepagevisualizesidebar = dac.Sidebar(
     title='CELLYZER',
     color="primary",
     brand_color="secondary",
-    src="assets/logo-cellyzer.png",
+    src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
 )
