@@ -21,7 +21,7 @@ time.sleep(2)
 
 ####### add call dataset
 call_name = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
-call_name.send_keys("E:\\Project\\demo_datasets\\test_data\\calls.csv")
+call_name.send_keys("D:\\SE Project sem5\\cellyzer-gui-pip\\test\\calls.csv")
 time.sleep(1.5)
 choose_call =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "upload-data_call")))
 choose_call.send_keys("Call")
@@ -151,7 +151,7 @@ time.sleep(2)
 
 ####### add message dataset
 message_name = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
-message_name.send_keys("E:\\Project\\demo_datasets\\test_data\\messages.csv")
+message_name.send_keys("D:\\SE Project sem5\\cellyzer-gui-pip\\test\\messages.csv")
 time.sleep(1.5)
 choose_message =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "upload-data_message")))
 choose_message.send_keys("Message")
@@ -239,7 +239,7 @@ cell.click()
 
 ####### add cell dataset
 cell_name = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
-cell_name.send_keys("E:\\Project\\demo_datasets\\test_data\\antennas.csv")
+cell_name.send_keys("D:\\SE Project sem5\\cellyzer-gui-pip\\test\\antennas.csv")
 time.sleep(2)
 choose_cell =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "upload-data_cell")))
 choose_cell.send_keys("Cell")

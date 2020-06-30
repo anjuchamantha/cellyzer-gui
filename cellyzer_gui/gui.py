@@ -99,7 +99,7 @@ homepageSidebar = dac.Sidebar(
     ),
     title='CELLYZER',
     color="primary",
-    brand_color="white",
+    brand_color="secondary",
     src="https://pngimg.com/uploads/letter_c/letter_c_PNG14.png",
     elevation=3,
     opacity=0.8
@@ -670,8 +670,7 @@ def add_call_dataset(filename, content, n_clicks, real_file):
                     dbc.Button("Active time of a given user", href='/Call_Dataset/{}/active_time'.format(filename),
                                color="light", className="mr-1", block=True, id='visu_active_time',
                                style={"margin-bottom": 10, "text-align": 'start'})))
-                option.append(dbc.Row(dbc.Button(["Visualize connections between all users ",
-                                                  dbc.Badge("Heavy Function", color="danger", className="mr-1")],
+                option.append(dbc.Row(dbc.Button(["Visualize connections between all users "],
                                                  color="light",
                                                  className="mr-1",
                                                  id='visu_call_visu_connection',
@@ -2378,8 +2377,7 @@ def add_message_dataset(filename, contents, n_clicks, real_file):
                                                  color="light", className="mr-1", block=True,
                                                  id='visu_message_records_2',
                                                  style={"margin-bottom": 10, "text-align": 'start'})))
-                option.append(dbc.Row(dbc.Button(["Visualize connections between all users ",
-                                                  dbc.Badge("Heavy Function", color="danger", className="mr-1")],
+                option.append(dbc.Row(dbc.Button(["Visualize connections between all users "],
                                                  color="light",
                                                  id='visu_message_visualization',
                                                  className="mr-1",
