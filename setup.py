@@ -9,12 +9,12 @@ def readme():
 
 setup(
     name="cellyzer-gui",
-    version="0.1.1",
+    version="1.0.0",
     description="GUI for Cellyzer,a CDR(Call Data Records) data analyzing library",
     long_description=readme(),
     long_description_content_type="text/markdown",
     url="https://github.com/anjuchamantha/cellyzer---CDR-data-analyzer",
-    PROJECT_URLS={
+    project_urls={
         "Documentation": "https://anjuchamantha.github.io/cellyzer---CDR-data-analyzer/",
         "Source Code": "https://github.com/anjuchamantha/cellyzer---CDR-data-analyzer",
     },

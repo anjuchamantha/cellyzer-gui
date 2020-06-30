@@ -1,11 +1,13 @@
 Metadata-Version: 2.1
 Name: cellyzer-gui
-Version: 0.1.1
+Version: 1.0.0
 Summary: GUI for Cellyzer,a CDR(Call Data Records) data analyzing library
 Home-page: https://github.com/anjuchamantha/cellyzer---CDR-data-analyzer
 Author: Team Cellyzer
 Author-email: chamantha97anju@gmail.com
 License: MIT
+Project-URL: Documentation, https://anjuchamantha.github.io/cellyzer---CDR-data-analyzer/
+Project-URL: Source Code, https://github.com/anjuchamantha/cellyzer---CDR-data-analyzer
 Description: # CELLYZER GUI
         
         **CELLYZER** is a python library for CDR(Call Detail Records) data analyzing. I majorly supports 3 type of datasets : Call, Message and Cell/Antenna
