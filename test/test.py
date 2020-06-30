@@ -4,28 +4,30 @@ from selenium .webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
-import sys
+import time
 
-sys.path.insert(0, '../')
 
-# chromedriver= "C:\\Users\\Malith\\Downloads\\chromedriver"
 chromedriver= "chromedriver"
 driver = webdriver.Chrome(chromedriver)
 driver.get("http://127.0.0.1:8050")
 
 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "add-cell-records-dataset")))
 element.click()
+driver.refresh()
 
 call = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "call_card")))
 call.click()
+time.sleep(2)
 
 ####### add call dataset
 call_name = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
 call_name.send_keys("E:\\Project\\demo_datasets\\test_data\\calls.csv")
+time.sleep(1.5)
 choose_call =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "upload-data_call")))
 choose_call.send_keys("Call")
 add_call = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "adding_call")))
 add_call.click()
+time.sleep(2)
 
 ###### go to dataset page after adding call dataset
 go_dataset_page = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "add-cell-records-dataset")))
@@ -35,26 +37,33 @@ driver.refresh()
 #### visit "Call" call dataset
 visit_call = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "Call")))
 visit_call.click()
+time.sleep(2)
 
 #### show call data
 show_call =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_show_call")))
 show_call.click()
+driver.refresh()
 call_head =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "call_head")))
 call_head.send_keys(20)
 call_tail =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "call_tail")))
 call_tail.send_keys(20)
 view_call_data =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "view")))
 view_call_data.click()
+time.sleep(3)
 driver.execute_script("window.history.go(-1)")
-driver.refresh()
+# driver.refresh()
+time.sleep(2)
 
 ##### show all call users
 call_users =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_call_users")))
 call_users.click()
+driver.refresh()
 view_call_users =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "get_users")))
 view_call_users.click()
+time.sleep(3)
 driver.execute_script("window.history.go(-1)")
-driver.refresh()
+# driver.refresh()
+time.sleep(2)
 
 # ##### show connected users for given input
 # connected_users =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_call_connected")))
@@ -123,10 +132,12 @@ driver.refresh()
 ##### visualize connection between all call users
 visualize_connection =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_call_visu_connection")))
 visualize_connection.click()
+driver.refresh()
 # select_user_call_visu_conn = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "select_user_visu_conn")))
 # select_user_call_visu_conn.click()
 view_visualize_connection =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visualize_connection")))
 view_visualize_connection.click()
+time.sleep(8)
 
 ##### go to dataset page after visualize connection of call users
 element = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "add-cell-records-dataset")))
@@ -136,14 +147,17 @@ driver.refresh()
 ################################
 message = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "message_card")))
 message.click()
+time.sleep(2)
 
 ####### add message dataset
 message_name = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
 message_name.send_keys("E:\\Project\\demo_datasets\\test_data\\messages.csv")
+time.sleep(1.5)
 choose_message =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "upload-data_message")))
 choose_message.send_keys("Message")
 add_message = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "adding_message")))
 add_message.click()
+time.sleep(2)
 
 ###### go to dataset page after adding message dataset
 go_dataset_page_message = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "add-cell-records-dataset")))
@@ -154,26 +168,33 @@ driver.refresh()
 visit_message = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "Message")))
 visit_message.click()
 driver.refresh()
+time.sleep(2)
 
 #### show message data
 show_message =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_message_data")))
 show_message.click()
+driver.refresh()
 msg_head =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "msg_head")))
 msg_head.send_keys(20)
 msg_tail =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "msg_tail")))
 msg_tail.send_keys(20)
 view_message_data =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "view_message")))
 view_message_data.click()
+time.sleep(3)
 driver.execute_script("window.history.go(-1)")
-driver.refresh()
+# driver.refresh()
+time.sleep(2)
 
 ##### show all message users
 message_users =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_message_users")))
 message_users.click()
+driver.refresh()
 view_message_users =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "get_message_users")))
 view_message_users.click()
+time.sleep(3)
 driver.execute_script("window.history.go(-1)")
-driver.refresh()
+# driver.refresh()
+time.sleep(2)
 
 # ###### show message record between 2 users
 # message_record_2_users =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_message_records_2")))
@@ -189,10 +210,13 @@ driver.refresh()
 ##### visualize connection between all message users
 visu_conn_message =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_message_visualization")))
 visu_conn_message.click()
+driver.refresh()
 view_visu_conn_message =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visualize_message_connection")))
 view_visu_conn_message.click()
+time.sleep(8)
 driver.execute_script("window.history.go(-1)")
-driver.refresh()
+# driver.refresh()
+time.sleep(2)
 
 # ##### show connected message users for given input
 # connected_message_users =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "visu_message_connected")))
@@ -216,18 +240,17 @@ cell.click()
 ####### add cell dataset
 cell_name = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[type='file']")))
 cell_name.send_keys("E:\\Project\\demo_datasets\\test_data\\antennas.csv")
-# cell_name = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "filepath_cell")))
-# cell_name.send_keys("C:\\Users\\Malith\\Downloads\\cellyzer---CDR-data-analyzer\\dataset\\sample data\\csv data\\antennas.csv")
+time.sleep(2)
 choose_cell =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "upload-data_cell")))
 choose_cell.send_keys("Cell")
-# choose_call_cell =  Select(WebDriverWait(driver, 20).until(EC.element_located_to_be_selected((By.ID, "select_call"))))
-# choose_call_cell.select_by_value('Call')
 choose_call_cell =  WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CSS_SELECTOR, "input[id='select_call']")))
 choose_call_cell.send_keys("Call")
-# choose_call_cell =  Select(WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "select_call"))))
-# choose_call_cell.select_by_visible_text('Call')
+time.sleep(1)
 add_cell = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "show_cell_dash")))
 add_cell.click()
+# choose_call_cell =  Select(WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "select_call"))))
+# choose_call_cell.select_by_visible_text('Call')
+
 
 # #### visit "Cell" cell dataset
 # visit_cell = WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.ID, "Cell")))
