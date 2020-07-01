@@ -12,3 +12,4 @@ cellyzer_gui/assets/add-call.gif
 cellyzer_gui/assets/add-dataset.gif
 cellyzer_gui/assets/functions.gif
 cellyzer_gui/assets/gui.css
+test/test.py

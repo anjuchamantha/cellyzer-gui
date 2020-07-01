@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: cellyzer-gui
-Version: 0.1.0
+Version: 0.1.1
 Summary: GUI for Cellyzer,a CDR(Call Data Records) data analyzing library
 Home-page: https://github.com/anjuchamantha/cellyzer---CDR-data-analyzer
 Author: Team Cellyzer
@@ -77,7 +77,7 @@ Description: # CELLYZER GUI
         
         ## Documentation
         
-        The official documentation is hosted on https://github.com/anjuchamantha/cellyzer---CDR-data-analyzer. It includes a demo, a detailed reference for all functions, and guides on how to use **CELLYZER**. 
+        The official documentation is hosted on https://anjuchamantha.github.io/cellyzer---CDR-data-analyzer/. It includes a demo, a detailed reference for all functions, and guides on how to use **CELLYZER**. 
         
         
 Platform: UNKNOWN
