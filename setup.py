@@ -30,7 +30,7 @@ setup(
     include_package_data=True,
     install_requires=[
         "cellyzer >= 1.1.1",
-        "dash == 1.10.0",
+        "dash == 2.15.0",
         "dash_admin_components == 0.1.4",
         "dash_bootstrap_components == 0.9.2",
     ],
